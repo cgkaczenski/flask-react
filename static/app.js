@@ -19124,10 +19124,50 @@ module.exports = validateDOMNesting;
 module.exports = require('./lib/React');
 
 },{"./lib/React":53}],159:[function(require,module,exports){
-var React = require('react');
-var ReactDOM = require('react-dom');
+'use strict';
 
-var reactElement = React.createElement('h1');
-ReactDOM.render(reactElement, document.getElementById('root'));
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var createListItemElement = _react2.default.createElement;
+
+var h1 = _react2.default.createElement('h1', { className: 'header', key: 'header' }, 'This is React');
+var p = _react2.default.createElement('p', { className: 'content', key: 'content' }, 'And this is how it works!');
+
+var li1 = createListItemElement('li', { className: 'item-1', key: 'item-1' }, 'Item 1');
+var li2 = createListItemElement('li', { className: 'item-2', key: 'item-2' }, 'Item 2');
+var li3 = createListItemElement('li', { className: 'item-3', key: 'item-3' }, 'Item 3');
+
+var reactFragment = [li1, li2, li3];
+var listOfItems = _react2.default.createElement('ul', { className: 'listOfItems' }, reactFragment);
+
+var list2 = _react2.default.createElement(
+	'ul',
+	{ className: 'list-of-items' },
+	_react2.default.createElement(
+		'li',
+		{ className: 'item-1' },
+		'Item 1'
+	),
+	_react2.default.createElement(
+		'li',
+		{ className: 'item-2' },
+		'Item 2'
+	),
+	_react2.default.createElement(
+		'li',
+		{ className: 'item-3' },
+		'Item 3'
+	)
+);
+
+_reactDom2.default.render(list2, document.getElementById('root'));
 
 },{"react":158,"react-dom":29}]},{},[159]);

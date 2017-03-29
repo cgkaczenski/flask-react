@@ -44,6 +44,8 @@ git remote add heroku <your_herkoku_app_url>
 git remote add heroku-staging <your_staging_app_url>
 ``` 
 
+Push the app to the Heroku remote:
+
 ```bash
 git push heroku master:master
 ``` 
@@ -54,4 +56,5 @@ app with the following:
 ```bash
 git push heroku-staging staging:master
 ``` 
+
 
