@@ -1,0 +1,31 @@
+{
+  "name": "flask-intro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.py",
+  "dependencies": {
+    "browserify": "^14.1.0",
+    "gulp": "^3.9.1",
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8"
+  },
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^14.1.0",
+    "gulp": "^3.9.1",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cgkaczenski/flask-intro.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cgkaczenski/flask-intro/issues"
+  },
+  "homepage": "https://github.com/cgkaczenski/flask-intro#readme"
+}
