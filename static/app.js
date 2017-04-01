@@ -20749,7 +20749,7 @@ var Tensorflow = function (_React$Component) {
       var _this2 = this;
 
       _axios2.default.get('/tensorflow').then(function (response) {
-        var text = response.data.result.slice(2, 24);
+        var text = response.data.result;
         _this2.setState({ text: text });
       }).catch(function (error) {
         console.log(error);

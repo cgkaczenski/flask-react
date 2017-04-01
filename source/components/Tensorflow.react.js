@@ -12,7 +12,7 @@ class Tensorflow extends React.Component {
   componentDidMount() {
     axios.get('/tensorflow')
     .then(response => {
-      var text = response.data.result.slice(2,24);
+      var text = response.data.result;
       this.setState({text:text});
     })
     .catch(error => {
