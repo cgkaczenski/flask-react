@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.py",
   "dependencies": {
+    "axios": "^0.15.3",
     "browserify": "^14.1.0",
     "gulp": "^3.9.1",
     "react": "^0.14.8",
