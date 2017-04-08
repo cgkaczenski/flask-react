@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, render_template, request
 import tensorflow as tf
 import json
+import numpy as np
+#import pickle
 
 app = Flask(__name__)
 
@@ -13,6 +15,16 @@ def text():
 @app.route("/")
 def home():
 	return render_template("home.html")
+
+@app.route('/canvas', methods=['POST'])
+def canvas():
+	input = request.json
+	input = np.array(input['data'])
+	input = ((255 - input) / 255.0)
+	#pickle.dump(input, open('data.p', 'wb'))
+	print(input.shape)
+	
+	return jsonify(result=str(input))
 
 @app.route('/tensorflow')
 def get():

@@ -20519,6 +20519,10 @@ module.exports = require('./lib/React');
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _Canvas = require('./Canvas.react');
+
+var _Canvas2 = _interopRequireDefault(_Canvas);
+
 var _Collection = require('./Collection.react');
 
 var _Collection2 = _interopRequireDefault(_Collection);
@@ -20560,7 +20564,7 @@ var Application = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'col-md-4 text-center' },
-            _react2.default.createElement(_Collection2.default, null)
+            _react2.default.createElement(_Canvas2.default, null)
           ),
           _react2.default.createElement(
             'div',
@@ -20577,7 +20581,147 @@ var Application = function (_React$Component) {
 
 module.exports = Application;
 
-},{"./Collection.react":185,"./Tensorflow.react":187,"react":183}],185:[function(require,module,exports){
+},{"./Canvas.react":185,"./Collection.react":186,"./Tensorflow.react":188,"react":183}],185:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _axios = require('axios');
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Canvas = function (_React$Component) {
+  _inherits(Canvas, _React$Component);
+
+  function Canvas(props) {
+    _classCallCheck(this, Canvas);
+
+    var _this = _possibleConstructorReturn(this, (Canvas.__proto__ || Object.getPrototypeOf(Canvas)).call(this, props));
+
+    _this.onMouseDown = _this.onMouseDown.bind(_this);
+    _this.onMouseUp = _this.onMouseUp.bind(_this);
+    _this.onMouseMove = _this.onMouseMove.bind(_this);
+    return _this;
+  }
+
+  _createClass(Canvas, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.canvas = _reactDom2.default.findDOMNode(this.canvasRef);
+      this.canvas.width = 449;
+      this.canvas.height = 449;
+      this.ctx = this.canvas.getContext('2d');
+      this.initialize();
+    }
+  }, {
+    key: 'initialize',
+    value: function initialize() {
+      this.ctx.fillStyle = '#FFFFFF';
+      this.ctx.fillRect(0, 0, 449, 449);
+      this.ctx.lineWidth = 1;
+      this.ctx.strokeRect(0, 0, 449, 449);
+      this.ctx.lineWidth = 0.05;
+    }
+  }, {
+    key: 'getCursorPosition',
+    value: function getCursorPosition(e) {
+      var _canvas$getBoundingCl = this.canvas.getBoundingClientRect(),
+          top = _canvas$getBoundingCl.top,
+          left = _canvas$getBoundingCl.left;
+
+      return {
+        x: e.clientX - left,
+        y: e.clientY - top
+      };
+    }
+  }, {
+    key: 'onMouseDown',
+    value: function onMouseDown(e) {
+      var prev = this.getCursorPosition(e);
+      this.prev = prev;
+      this.drawing = true;
+    }
+  }, {
+    key: 'onMouseUp',
+    value: function onMouseUp(e) {
+      this.drawing = false;
+
+      var canvas_image = this.ctx.getImageData(0, 0, 449, 449).data;
+      var data = Array.prototype.slice.call(canvas_image);
+
+      _axios2.default.post('/canvas', {
+        data: data
+      }).then(function (response) {
+        console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
+  }, {
+    key: 'onMouseMove',
+    value: function onMouseMove(e) {
+      if (this.drawing) {
+        var curr = this.getCursorPosition(e);
+        this.ctx.lineWidth = 16;
+        this.ctx.lineCap = 'round';
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.prev.x, this.prev.y);
+        this.ctx.lineTo(curr.x, curr.y);
+        this.ctx.stroke();
+        this.ctx.closePath();
+        this.prev = curr;
+      }
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {}
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'p',
+          null,
+          'Draw:'
+        ),
+        _react2.default.createElement('canvas', {
+          ref: function ref(canvas) {
+            _this2.canvasRef = canvas;
+          },
+          onMouseDown: this.onMouseDown,
+          onMouseUp: this.onMouseUp,
+          onMouseMove: this.onMouseMove
+        })
+      );
+    }
+  }]);
+
+  return Canvas;
+}(_react2.default.Component);
+
+module.exports = Canvas;
+
+},{"axios":1,"react":183,"react-dom":54}],186:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20654,7 +20798,7 @@ var Collection = function (_React$Component) {
 
 module.exports = Collection;
 
-},{"react":183}],186:[function(require,module,exports){
+},{"react":183}],187:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20706,7 +20850,7 @@ var Header = function (_React$Component) {
 
 module.exports = Header;
 
-},{"react":183}],187:[function(require,module,exports){
+},{"react":183}],188:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20771,7 +20915,7 @@ var Tensorflow = function (_React$Component) {
 
 module.exports = Tensorflow;
 
-},{"./Header.react":186,"axios":1,"react":183}],188:[function(require,module,exports){
+},{"./Header.react":187,"axios":1,"react":183}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20790,4 +20934,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _reactDom2.default.render(_react2.default.createElement(_Application2.default, null), document.getElementById('root'));
 
-},{"./components/Application.react":184,"react":183,"react-dom":54}]},{},[188]);
+},{"./components/Application.react":184,"react":183,"react-dom":54}]},{},[189]);
