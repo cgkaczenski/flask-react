@@ -2,6 +2,7 @@ from flask import Flask, jsonify, render_template, request
 import tensorflow as tf
 import json
 import numpy as np
+import PIL.Image as Image
 #import pickle
 
 app = Flask(__name__)
@@ -19,12 +20,18 @@ def home():
 @app.route('/canvas', methods=['POST'])
 def canvas():
 	input = request.json
-	input = np.array(input['data'])
-	input = ((255 - input) / 255.0)
+	input = resize(input['data'])
+
 	#pickle.dump(input, open('data.p', 'wb'))
-	print(input.shape)
-	
 	return jsonify(result=str(input))
+
+def resize(image_list):
+	image = np.array(image_list).reshape(448,-1)
+	max_val = max(image_list)
+	image = ((max_val - image) / float(max_val))
+	im = Image.fromarray(image)
+	im = im.resize((28, 28), Image.ANTIALIAS)
+	return np.array(im)
 
 @app.route('/tensorflow')
 def get():

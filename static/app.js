@@ -20624,8 +20624,8 @@ var Canvas = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       this.canvas = _reactDom2.default.findDOMNode(this.canvasRef);
-      this.canvas.width = 449;
-      this.canvas.height = 449;
+      this.canvas.width = 448;
+      this.canvas.height = 448;
       this.ctx = this.canvas.getContext('2d');
       this.initialize();
     }
@@ -20633,9 +20633,9 @@ var Canvas = function (_React$Component) {
     key: 'initialize',
     value: function initialize() {
       this.ctx.fillStyle = '#FFFFFF';
-      this.ctx.fillRect(0, 0, 449, 449);
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.lineWidth = 1;
-      this.ctx.strokeRect(0, 0, 449, 449);
+      this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.lineWidth = 0.05;
     }
   }, {
@@ -20662,8 +20662,9 @@ var Canvas = function (_React$Component) {
     value: function onMouseUp(e) {
       this.drawing = false;
 
-      var canvas_image = this.ctx.getImageData(0, 0, 449, 449).data;
-      var data = Array.prototype.slice.call(canvas_image);
+      var data = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      data = new Uint32Array(data.data.buffer);
+      data = Array.from(data);
 
       _axios2.default.post('/canvas', {
         data: data

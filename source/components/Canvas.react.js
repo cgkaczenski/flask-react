@@ -13,17 +13,17 @@ class Canvas extends React.Component {
 
   componentDidMount() {
     this.canvas = ReactDOM.findDOMNode(this.canvasRef);
-    this.canvas.width = 449;
-    this.canvas.height = 449;
+    this.canvas.width = 448;
+    this.canvas.height = 448;
     this.ctx = this.canvas.getContext('2d');
     this.initialize();
   }
 
   initialize() {
     this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.fillRect(0, 0, 449, 449);
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.lineWidth = 1;
-    this.ctx.strokeRect(0, 0, 449, 449);
+    this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.lineWidth = 0.05;
     }
 
@@ -44,9 +44,11 @@ class Canvas extends React.Component {
   onMouseUp(e){
     this.drawing = false;
 
-    var canvas_image = this.ctx.getImageData(0, 0, 449, 449).data;
-    var data = Array.prototype.slice.call(canvas_image);
-
+    var data = this.ctx.getImageData(0, 0,
+     this.canvas.width, this.canvas.height);
+    data = new Uint32Array(data.data.buffer);
+    data = Array.from(data);
+    
     axios.post('/canvas', {
       data: data
     })
