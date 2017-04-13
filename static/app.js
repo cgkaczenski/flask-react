@@ -20566,11 +20566,7 @@ var Application = function (_React$Component) {
             { className: 'col-md-4 text-center' },
             _react2.default.createElement(_Canvas2.default, null)
           ),
-          _react2.default.createElement(
-            'div',
-            { className: 'col-md-8' },
-            _react2.default.createElement(_Tensorflow2.default, null)
-          )
+          _react2.default.createElement('div', { className: 'col-md-8' })
         )
       );
     }

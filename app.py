@@ -1,17 +1,25 @@
 from flask import Flask, jsonify, render_template, request
 import tensorflow as tf
 import json
+from ai import model
 import numpy as np
 import PIL.Image as Image
 #import pickle
 
 app = Flask(__name__)
 
-hello = tf.constant('Hello, Tensorflow API!')
+save_model_path = './ai/notMNIST_saved_model'
+loaded_graph = tf.Graph()
+
+x = tf.placeholder(tf.float32, shape=(None, 28, 28, 1))
 sess = tf.Session()
 
-def text():
-	return sess.run(hello)
+with tf.variable_scope("convolutional"):
+    keep_prob = tf.placeholder(tf.float32)
+    logits, variables = model.conv_net(x, keep_prob)
+
+saver = tf.train.Saver(variables)
+saver.restore(sess, save_model_path)
 
 @app.route("/")
 def home():
@@ -19,11 +27,12 @@ def home():
 
 @app.route('/canvas', methods=['POST'])
 def canvas():
-	input = request.json
-	input = resize(input['data'])
-
+	input = request.json['data']
 	#pickle.dump(input, open('data.p', 'wb'))
-	return jsonify(result=str(input))
+	input = resize(input)
+	x = predict(input)
+	
+	return jsonify(result=str(x))
 
 def resize(image_list):
 	image = np.array(image_list).reshape(448,-1)
@@ -31,11 +40,10 @@ def resize(image_list):
 	image = ((max_val - image) / float(max_val))
 	im = Image.fromarray(image)
 	im = im.resize((28, 28), Image.ANTIALIAS)
-	return np.array(im)
+	return np.array(im).reshape(1,28,28,1)
 
-@app.route('/tensorflow')
-def get():
-	return jsonify(result=str(text()))
+def predict(input):
+    return sess.run([logits], feed_dict={x: input, keep_prob: 1.0})[0][0]
 
 if __name__ == '__main__':
     app.run()
