@@ -14,7 +14,7 @@ class Application extends React.Component {
           	
           </div>
           <div className="col-md-8">
-          	<Tensorflow />
+          	
           </div>
         </div>
       </div>
