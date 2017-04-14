@@ -20610,6 +20610,8 @@ var Canvas = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Canvas.__proto__ || Object.getPrototypeOf(Canvas)).call(this, props));
 
+    _this.state = { text: [] };
+
     _this.onMouseDown = _this.onMouseDown.bind(_this);
     _this.onMouseUp = _this.onMouseUp.bind(_this);
     _this.onMouseMove = _this.onMouseMove.bind(_this);
@@ -20624,6 +20626,15 @@ var Canvas = function (_React$Component) {
       this.canvas.height = 448;
       this.ctx = this.canvas.getContext('2d');
       this.initialize();
+    }
+  }, {
+    key: 'handleResponse',
+    value: function handleResponse(newtext) {
+      this.setState(function (prevState) {
+        return {
+          text: newtext
+        };
+      });
     }
   }, {
     key: 'initialize',
@@ -20656,6 +20667,8 @@ var Canvas = function (_React$Component) {
   }, {
     key: 'onMouseUp',
     value: function onMouseUp(e) {
+      var _this2 = this;
+
       this.drawing = false;
 
       var img = new Image();
@@ -20675,9 +20688,11 @@ var Canvas = function (_React$Component) {
         _axios2.default.post('/canvas', {
           data: inputs
         }).then(function (response) {
-          var text = response.data.result;
-          console.log(text);
-        }).catch(function (error) {
+          var index = response.data.result;
+          var text = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+          console.log(index);
+          this.setState({ text: text[index] });
+        }.bind(_this2)).catch(function (error) {
           console.log(error);
         });
       };
@@ -20688,7 +20703,7 @@ var Canvas = function (_React$Component) {
     value: function onMouseMove(e) {
       if (this.drawing) {
         var curr = this.getCursorPosition(e);
-        this.ctx.lineWidth = 16;
+        this.ctx.lineWidth = 50;
         this.ctx.lineCap = 'round';
         this.ctx.beginPath();
         this.ctx.moveTo(this.prev.x, this.prev.y);
@@ -20701,7 +20716,7 @@ var Canvas = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(
         'div',
@@ -20709,16 +20724,22 @@ var Canvas = function (_React$Component) {
         _react2.default.createElement(
           'p',
           null,
-          'Draw:'
+          'Draw a letter A,B,C,D,E,F,G,H,I,J:'
         ),
         _react2.default.createElement('canvas', {
           ref: function ref(canvas) {
-            _this2.canvasRef = canvas;
+            _this3.canvasRef = canvas;
           },
           onMouseDown: this.onMouseDown,
           onMouseUp: this.onMouseUp,
           onMouseMove: this.onMouseMove
-        })
+        }),
+        _react2.default.createElement(
+          'h1',
+          null,
+          'Result:',
+          this.state.text
+        )
       );
     }
   }]);

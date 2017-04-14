@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 class Canvas extends React.Component {
 	constructor(props) {
     super(props);
+    this.state = {text: []};
 
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -17,6 +18,12 @@ class Canvas extends React.Component {
     this.canvas.height = 448;
     this.ctx = this.canvas.getContext('2d');
     this.initialize();
+  }
+
+  handleResponse(newtext) {
+    this.setState(prevState => ({
+      text: newtext
+    }));
   }
 
   initialize() {
@@ -62,9 +69,11 @@ class Canvas extends React.Component {
         data: inputs
       })
       .then(function (response) {
-        var text = response.data.result;
-        console.log(text);
-      })
+        var index = response.data.result;
+        var text = ["A","B","C","D","E","F","G","H","I","J"];
+        console.log(index);
+        this.setState({text:text[index]});
+      }.bind(this))
       .catch(function (error) {
         console.log(error);
       });
@@ -75,7 +84,7 @@ class Canvas extends React.Component {
   onMouseMove(e) {
     if (this.drawing){
       var curr = this.getCursorPosition(e);
-      this.ctx.lineWidth = 16;
+      this.ctx.lineWidth = 50;
       this.ctx.lineCap = 'round';
       this.ctx.beginPath();
       this.ctx.moveTo(this.prev.x, this.prev.y);
@@ -89,13 +98,14 @@ class Canvas extends React.Component {
   render () {
     return (
     	<div>
-    		<p>Draw:</p>
+    		<p>Draw a letter A,B,C,D,E,F,G,H,I,J:</p>
         <canvas
          ref={(canvas) => { this.canvasRef = canvas; }}
          onMouseDown={this.onMouseDown}
          onMouseUp={this.onMouseUp}
          onMouseMove={this.onMouseMove}
          ></canvas>
+         <h1>Result:{this.state.text}</h1>
     	</div>
     	);
   }
