@@ -24,11 +24,9 @@ def predict(input):
 
 data = pickle.load(open('../data.p', mode='rb'))
 
-image = np.array(data).reshape(448,-1)
-
-image = np.resize(image, (28,28))
+image = np.array(data) / 255.0
 image = image.reshape(1,28,28,1)
 
-print(image.shape)
+#print(image[:100])
 
 print(predict(image))

@@ -20658,17 +20658,30 @@ var Canvas = function (_React$Component) {
     value: function onMouseUp(e) {
       this.drawing = false;
 
-      var data = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-      data = new Uint32Array(data.data.buffer);
-      data = Array.from(data);
+      var img = new Image();
+      img.onload = function () {
+        var inputs = [];
+        var context = document.createElement('canvas').getContext('2d');
+        context.drawImage(img, 0, 0, img.width, img.height, 0, 0, 28, 28);
+        var data = context.getImageData(0, 0, 28, 28).data;
 
-      _axios2.default.post('/canvas', {
-        data: data
-      }).then(function (response) {
-        console.log(response);
-      }).catch(function (error) {
-        console.log(error);
-      });
+        for (var i = 0; i < 28; i++) {
+          for (var j = 0; j < 28; j++) {
+            var n = 4 * (i * 28 + j);
+            inputs[i * 28 + j] = (data[n + 0] + data[n + 1] + data[n + 2]) / 3;
+          }
+        }
+
+        _axios2.default.post('/canvas', {
+          data: inputs
+        }).then(function (response) {
+          var text = response.data.result;
+          console.log(text);
+        }).catch(function (error) {
+          console.log(error);
+        });
+      };
+      img.src = this.canvas.toDataURL();
     }
   }, {
     key: 'onMouseMove',
@@ -20685,9 +20698,6 @@ var Canvas = function (_React$Component) {
         this.prev = curr;
       }
     }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {}
   }, {
     key: 'render',
     value: function render() {

@@ -29,18 +29,11 @@ def home():
 def canvas():
 	input = request.json['data']
 	#pickle.dump(input, open('data.p', 'wb'))
-	input = resize(input)
-	x = predict(input)
-	
-	return jsonify(result=str(x))
-
-def resize(image_list):
-	image = np.array(image_list).reshape(448,-1)
-	max_val = max(image_list)
-	image = ((max_val - image) / float(max_val))
-	im = Image.fromarray(image)
-	im = im.resize((28, 28), Image.ANTIALIAS)
-	return np.array(im).reshape(1,28,28,1)
+	image = np.array(input) / 255.0
+	image = image.reshape(1,28,28,1)
+	result = predict(image)
+	result = np.argmax(result)
+	return jsonify(result=str(result))
 
 def predict(input):
     return sess.run([logits], feed_dict={x: input, keep_prob: 1.0})[0][0]
