@@ -20615,6 +20615,7 @@ var Canvas = function (_React$Component) {
     _this.onMouseDown = _this.onMouseDown.bind(_this);
     _this.onMouseUp = _this.onMouseUp.bind(_this);
     _this.onMouseMove = _this.onMouseMove.bind(_this);
+    _this.initialize = _this.initialize.bind(_this);
     return _this;
   }
 
@@ -20628,22 +20629,14 @@ var Canvas = function (_React$Component) {
       this.initialize();
     }
   }, {
-    key: 'handleResponse',
-    value: function handleResponse(newtext) {
-      this.setState(function (prevState) {
-        return {
-          text: newtext
-        };
-      });
-    }
-  }, {
     key: 'initialize',
     value: function initialize() {
       this.ctx.fillStyle = '#FFFFFF';
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.fillRect(0, 0, 448, 448);
       this.ctx.lineWidth = 1;
-      this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
+      this.ctx.strokeRect(0, 0, 448, 448);
       this.ctx.lineWidth = 0.05;
+      this.setState({ text: [] });
     }
   }, {
     key: 'getCursorPosition',
@@ -20718,13 +20711,24 @@ var Canvas = function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
+      var headerStyle = {
+        fontSize: '16px',
+        fontWeight: '300',
+        display: 'block',
+        margin: '20px 10px' };
+
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
-          'p',
+          'h1',
           null,
-          'Draw a letter A,B,C,D,E,F,G,H,I,J:'
+          'Draw a letter'
+        ),
+        _react2.default.createElement(
+          'h2',
+          null,
+          'A,B,C,D,E,F,G,H,I,J'
         ),
         _react2.default.createElement('canvas', {
           ref: function ref(canvas) {
@@ -20734,6 +20738,11 @@ var Canvas = function (_React$Component) {
           onMouseUp: this.onMouseUp,
           onMouseMove: this.onMouseMove
         }),
+        _react2.default.createElement(
+          'button',
+          { style: headerStyle, onClick: this.initialize },
+          'Clear'
+        ),
         _react2.default.createElement(
           'h1',
           null,

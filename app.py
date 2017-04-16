@@ -3,7 +3,6 @@ import tensorflow as tf
 import json
 from ai import model
 import numpy as np
-import PIL.Image as Image
 #import pickle
 
 app = Flask(__name__)

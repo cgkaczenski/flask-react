@@ -10,6 +10,7 @@ class Canvas extends React.Component {
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
+    this.initialize = this.initialize.bind(this);
   }
 
   componentDidMount() {
@@ -20,18 +21,13 @@ class Canvas extends React.Component {
     this.initialize();
   }
 
-  handleResponse(newtext) {
-    this.setState(prevState => ({
-      text: newtext
-    }));
-  }
-
   initialize() {
     this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillRect(0, 0, 448, 448);
     this.ctx.lineWidth = 1;
-    this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.strokeRect(0, 0, 448, 448);
     this.ctx.lineWidth = 0.05;
+    this.setState({text:[]});
   }
 
   getCursorPosition(e) {
@@ -96,15 +92,23 @@ class Canvas extends React.Component {
     }
 
   render () {
+    var buttonrStyle = {
+      fontSize: '16px',
+      fontWeight: '300',
+      display: 'block',
+      margin: '20px 10px'};
+
     return (
     	<div>
-    		<p>Draw a letter A,B,C,D,E,F,G,H,I,J:</p>
+    		<h1>Draw a letter</h1>
+        <h2>A,B,C,D,E,F,G,H,I,J</h2>
         <canvas
          ref={(canvas) => { this.canvasRef = canvas; }}
          onMouseDown={this.onMouseDown}
          onMouseUp={this.onMouseUp}
          onMouseMove={this.onMouseMove}
          ></canvas>
+         <button style={buttonStyle} onClick={this.initialize}>Clear</button>
          <h1>Result:{this.state.text}</h1>
     	</div>
     	);
