@@ -92,7 +92,7 @@ class Canvas extends React.Component {
     }
 
   render () {
-    var buttonrStyle = {
+    var buttonStyle = {
       fontSize: '16px',
       fontWeight: '300',
       display: 'block',
