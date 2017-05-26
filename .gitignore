@@ -1,1 +1,6 @@
 node_modules
+notMNIST.pickle
+__pycache__
+train_data.p
+valid_data.p
+test_data.p
