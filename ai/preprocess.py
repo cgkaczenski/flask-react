@@ -25,17 +25,24 @@ with open(filename, mode='rb') as file:
 	labels = save['train_labels']
 	valid_features = save['valid_dataset']
 	valid_labels = save['valid_labels']
+  test_features = save['test_dataset']
+  test_labels = save['test_labels']
 	del save
 
 print(features.shape, labels.shape)
 print(valid_features.shape, valid_labels.shape)
+print(test_features.shape, test_labels.shape)
 
 features, labels = reformat(features, labels)
 valid_features, valid_labels = reformat(valid_features, valid_labels)
+test_features, test_labels = reformat(test_features, test_labels)
 print(features.shape, labels.shape)
 print(valid_features.shape, valid_labels.shape)
+print(test_features.shape, test_labels.shape)
 
 filename = 'train_data.p'
 pickle.dump((features, labels), open(filename, 'wb'))
 filename = 'valid_data.p'
 pickle.dump((valid_features, valid_labels), open(filename, 'wb'))
+filename = 'test_data.p'
+pickle.dump((test_features, test_labels), open(filename, 'wb'))
