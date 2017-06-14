@@ -1,7 +1,28 @@
+import csv
 import model
 import numpy as np
+import os
 import pickle
 import tensorflow as tf
+
+class Logger(object):
+    def __init__(self):
+        self.log_fields = ['step', 'loss']
+
+        self.train_log_filename = os.path.join("logs", "train_results.csv")
+        self.train_log_file = open(self.train_log_filename, 'w')
+        self.train_log = csv.DictWriter(self.train_log_file, fieldnames=self.log_fields)
+        self.train_log.writeheader()
+        
+        self.valid_log_filename = os.path.join("logs", "valid_results.csv")
+        self.valid_log_file = open(self.valid_log_filename, 'w')
+        self.valid_log = csv.DictWriter(self.valid_log_file, fieldnames=self.log_fields)
+        self.valid_log.writeheader()
+
+        self.step = 1
+        self.train_loss = 5.0
+        self.valid_loss = 5.0
+
 
 def neural_net_image_input(image_shape):
     """
@@ -40,7 +61,7 @@ def train_neural_network(session, optimizer, keep_probability, feature_batch, la
     feed_dict = {x : feature_batch, y : label_batch, keep_prob : keep_probability}
     session.run([optimizer], feed_dict=feed_dict)
 
-def print_stats(session, features, labels, cost, accuracy):
+def print_save_stats(session, features, labels, cost, accuracy):
     """
     Print information about loss and validation accuracy
     : session: Current TensorFlow session
@@ -51,8 +72,11 @@ def print_stats(session, features, labels, cost, accuracy):
     """
     feed_dict = {x : features, y : labels, keep_prob : 1.0}
     _, l, acc = session.run([optimizer, cost, accuracy], feed_dict=feed_dict)
+    print('step: %i' % logger.step)
     print('loss: %f' % l)
     print('Accuracy: %.2f%%' % (acc*100.0))
+    return l
+
 
 def batch_features_labels(features, labels, batch_size):
     """
@@ -61,6 +85,8 @@ def batch_features_labels(features, labels, batch_size):
     for start in range(0, len(features), batch_size):
         end = min(start + batch_size, len(features))
         yield features[start:end], labels[start:end]
+
+logger = Logger()
 
 # Tune Parameters
 epochs = 5
@@ -90,17 +116,36 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
 features, labels = pickle.load(open('train_data.p', mode='rb'))
 valid_features, valid_labels = pickle.load(open('valid_data.p', mode='rb'))
 
-save_model_path = './notMNIST_saved_model'
-saver = tf.train.Saver(variables)
+#save_model_path = './notMNIST_saved_model'
+#saver = tf.train.Saver(variables)
 with tf.Session() as sess:
     # Initializing the variables
     sess.run(tf.global_variables_initializer())
     
 	# Training cycle
     for epoch in range(epochs):
+        print('Epoch {:>2}:  '.format(epoch + 1), end='')
+        l = print_save_stats(sess, valid_features, valid_labels, cost, accuracy)
+        logger.valid_loss = l
+        logger.valid_log.writerow({'step':logger.step, 'loss': logger.valid_loss})
+
         for batch_features, batch_labels in batch_features_labels(features, labels, batch_size):
             train_neural_network(sess, optimizer, keep_probability, batch_features, batch_labels)
-        print('Epoch {:>2}:  '.format(epoch + 1), end='')
-        print_stats(sess, valid_features, valid_labels, cost, accuracy)
+            l = print_save_stats(sess, batch_features, batch_labels, cost, accuracy)
+            logger.train_loss = l
+            logger.train_log.writerow({'step':logger.step, 'loss': logger.train_loss})
 
-    save_path = saver.save(sess, save_model_path)
+            logger.step += 1
+            if(logger.step %100 == 0):
+                print('Epoch {:>2}:  '.format(epoch + 1), end='')
+                l = print_save_stats(sess, valid_features, valid_labels, cost, accuracy)
+                logger.valid_loss = l
+                logger.valid_log.writerow({'step':logger.step, 'loss': logger.valid_loss})
+
+
+        print('Epoch {:>2}:  '.format(epoch + 1), end='')
+        l = print_save_stats(sess, valid_features, valid_labels, cost, accuracy)
+        logger.valid_loss = l
+        logger.valid_log.writerow({'step':logger.step, 'loss': logger.valid_loss})
+
+    #save_path = saver.save(sess, save_model_path)
