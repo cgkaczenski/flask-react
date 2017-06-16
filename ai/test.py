@@ -3,6 +3,9 @@ import numpy as np
 import pickle
 import tensorflow as tf
 
+def predict(input):
+    return sess.run([logits], feed_dict={x: input, keep_prob: 1.0})[0]
+
 save_model_path = './notMNIST_saved_model'
 loaded_graph = tf.Graph()
 
@@ -16,17 +19,12 @@ with tf.variable_scope("convolutional"):
 saver = tf.train.Saver(variables)
 saver.restore(sess, save_model_path)
 
-def predict(input):
-    return sess.run([logits], feed_dict={x: input, keep_prob: 1.0})
+data, labels = pickle.load(open('./test_data.p', mode='rb'))
 
-#valid_features, valid_labels = pickle.load(open('./valid_data.p', mode='rb'))
-#image = valid_features[0:10]
+image = np.array(data)
+image = image.reshape(10000,28,28,1)
+logits = predict(image)
 
-data = pickle.load(open('../data.p', mode='rb'))
-
-image = np.array(data) / 255.0
-image = image.reshape(1,28,28,1)
-
-#print(image[:100])
-
-print(predict(image))
+# Accuracy
+correct_pred = np.equal(np.argmax(logits, 1), np.argmax(labels, 1))
+print("Accuracy on testing set: " + str(np.mean(correct_pred)*100.0) + '%')
