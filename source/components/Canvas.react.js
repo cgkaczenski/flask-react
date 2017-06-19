@@ -15,17 +15,17 @@ class Canvas extends React.Component {
 
   componentDidMount() {
     this.canvas = ReactDOM.findDOMNode(this.canvasRef);
-    this.canvas.width = 448;
-    this.canvas.height = 448;
+    this.canvas.width = this.props.width;
+    this.canvas.height = this.props.height;
     this.ctx = this.canvas.getContext('2d');
     this.initialize();
   }
 
   initialize() {
     this.ctx.fillStyle = '#FFFFFF';
-    this.ctx.fillRect(0, 0, 448, 448);
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.lineWidth = 1;
-    this.ctx.strokeRect(0, 0, 448, 448);
+    this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.lineWidth = 0.05;
     this.setState({text:[]});
   }
@@ -50,10 +50,17 @@ class Canvas extends React.Component {
     var img = new Image();
     img.onload = () => {
       var inputs = [];
+
+      //Create a new canvas context in order to resize the image
       var context = document.createElement('canvas').getContext('2d');
+
+      //Resize the image by redrawing it
       context.drawImage(img, 0, 0, img.width, img.height, 0, 0, 28, 28);
+
+      //grab the raw image data
       var data = context.getImageData(0, 0, 28, 28).data;
 
+      //Change the encoding of the image data (UInt8 clampedArray)
       for (var i = 0; i < 28; i++) {
         for (var j = 0; j < 28; j++) {
           var n = 4 * (i * 28 + j);
