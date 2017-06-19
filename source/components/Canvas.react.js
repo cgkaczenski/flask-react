@@ -1,6 +1,10 @@
+import Accuracy from './Accuracy.react';
 import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Grid } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 class Canvas extends React.Component {
 	constructor(props) {
@@ -17,6 +21,7 @@ class Canvas extends React.Component {
     this.canvas = ReactDOM.findDOMNode(this.canvasRef);
     this.canvas.width = this.props.width;
     this.canvas.height = this.props.height;
+    this.lineWidth = this.props.lineWidth;
     this.ctx = this.canvas.getContext('2d');
     this.initialize();
   }
@@ -87,7 +92,7 @@ class Canvas extends React.Component {
   onMouseMove(e) {
     if (this.drawing){
       var curr = this.getCursorPosition(e);
-      this.ctx.lineWidth = 50;
+      this.ctx.lineWidth = this.lineWidth;
       this.ctx.lineCap = 'round';
       this.ctx.beginPath();
       this.ctx.moveTo(this.prev.x, this.prev.y);
@@ -108,16 +113,24 @@ class Canvas extends React.Component {
     return (
     	<div>
     		<h1>Draw a letter</h1>
-        <h2>A,B,C,D,E,F,G,H,I,J</h2>
-        <canvas
-         ref={(canvas) => { this.canvasRef = canvas; }}
-         onMouseDown={this.onMouseDown}
-         onMouseUp={this.onMouseUp}
-         onMouseMove={this.onMouseMove}
-         ></canvas>
-         <button style={buttonStyle} onClick={this.initialize}>Clear</button>
-         <h1>Result:{this.state.text}</h1>
-    	</div>
+		    <h2>A,B,C,D,E,F,G,H,I,J</h2>
+			<Grid>
+				<Row className="show-grid">
+			      <Col xs={7} sm={8} md={8}>
+			        <canvas
+			         ref={(canvas) => { this.canvasRef = canvas; }}
+			         onMouseDown={this.onMouseDown}
+			         onMouseUp={this.onMouseUp}
+			         onMouseMove={this.onMouseMove}
+			         ></canvas>
+			         <button style={buttonStyle} onClick={this.initialize}>Clear</button>
+			      </Col>
+			      <Col xs={6} sm={4} md={4}>
+			      	<Accuracy result={this.state.text}/>
+			      </Col>
+			    </Row>
+			</Grid>
+		</div>
     	);
   }
 }
