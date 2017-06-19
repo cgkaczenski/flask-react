@@ -17,10 +17,13 @@ def plot(csv1, csv2):
 	ax.set_ylim((0, 1.05))
 	ax.set_xlabel("Step Number")
 
+	average = train_data['loss'].rolling(window=10, center=False).mean()
+
 	blue = mpatches.Patch(color='blue', label='Training Loss')
 	red = mpatches.Patch(color='red', label='Validation Loss')
 	plt.legend(handles=[blue,red])
 	
-	ax.plot(train_data['loss'], color='blue', label='training loss')
+	ax.plot(average, color='blue', label='training loss')
 	ax.plot(valid_data['step'], valid_data['loss'],'ro', linestyle='--')
 	plt.show()
+	
