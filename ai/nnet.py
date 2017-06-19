@@ -89,7 +89,7 @@ def batch_features_labels(features, labels, batch_size):
 logger = Logger()
 
 # Tune Parameters
-epochs = 5
+epochs = 50
 batch_size = 256
 keep_probability = 0.5
 
@@ -116,8 +116,8 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name='accuracy')
 features, labels = pickle.load(open('train_data.p', mode='rb'))
 valid_features, valid_labels = pickle.load(open('valid_data.p', mode='rb'))
 
-#save_model_path = './notMNIST_saved_model'
-#saver = tf.train.Saver(variables)
+save_model_path = './notMNIST_saved_model'
+saver = tf.train.Saver(variables)
 with tf.Session() as sess:
     # Initializing the variables
     sess.run(tf.global_variables_initializer())
@@ -134,18 +134,12 @@ with tf.Session() as sess:
             l = print_save_stats(sess, batch_features, batch_labels, cost, accuracy)
             logger.train_loss = l
             logger.train_log.writerow({'step':logger.step, 'loss': logger.train_loss})
-
             logger.step += 1
-            if(logger.step %100 == 0):
-                print('Epoch {:>2}:  '.format(epoch + 1), end='')
-                l = print_save_stats(sess, valid_features, valid_labels, cost, accuracy)
-                logger.valid_loss = l
-                logger.valid_log.writerow({'step':logger.step, 'loss': logger.valid_loss})
-
 
         print('Epoch {:>2}:  '.format(epoch + 1), end='')
         l = print_save_stats(sess, valid_features, valid_labels, cost, accuracy)
         logger.valid_loss = l
         logger.valid_log.writerow({'step':logger.step, 'loss': logger.valid_loss})
 
-    #save_path = saver.save(sess, save_model_path)
+    save_path = saver.save(sess, save_model_path)
+    

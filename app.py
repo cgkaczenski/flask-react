@@ -3,7 +3,6 @@ import tensorflow as tf
 import json
 from ai import model
 import numpy as np
-#import pickle
 
 app = Flask(__name__)
 
@@ -27,7 +26,6 @@ def home():
 @app.route('/canvas', methods=['POST'])
 def canvas():
 	input = request.json['data']
-	#pickle.dump(input, open('data.p', 'wb'))
 	image = np.array(input) / 255.0
 	image = image.reshape(1,28,28,1)
 	result = predict(image)
