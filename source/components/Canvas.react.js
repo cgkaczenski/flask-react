@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import { Grid } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
+import { PageHeader } from 'react-bootstrap';
+import { Jumbotron } from 'react-bootstrap';
 
 class Canvas extends React.Component {
 	constructor(props) {
@@ -110,10 +112,13 @@ class Canvas extends React.Component {
       display: 'block',
       margin: '20px 10px'};
 
-    return (
+      return (
     	<div>
-    		<h1>Draw a letter</h1>
-		    <h2>A,B,C,D,E,F,G,H,I,J</h2>
+    		<Jumbotron>
+	    		<PageHeader>Draw a letter <small> A,B,C,D,E,F,G,H,I,J</small>
+	    		</PageHeader>
+	    	</Jumbotron>
+	    
 			<Grid>
 				<Row className="show-grid">
 			      <Col xs={7} sm={8} md={8}>
@@ -126,7 +131,8 @@ class Canvas extends React.Component {
 			         <button style={buttonStyle} onClick={this.initialize}>Clear</button>
 			      </Col>
 			      <Col xs={6} sm={4} md={4}>
-			      	<Accuracy result={this.state.text}/>
+			        <h1>Result:{this.state.text}</h1>
+			      	<Accuracy/>
 			      </Col>
 			    </Row>
 			</Grid>

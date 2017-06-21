@@ -10,7 +10,7 @@ class Application extends React.Component {
         <MediaQuery minWidth={1200}>
           {(matches) => {
             if (matches) {
-              return <div><Canvas height="700" width="700" lineWidth="50"/></div>;
+              return <div><Canvas height="600" width="600" lineWidth="50"/></div>;
             } else {
               return <div></div>;
             }

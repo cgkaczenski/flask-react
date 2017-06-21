@@ -41702,6 +41702,8 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _reactBootstrap = require('react-bootstrap');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41718,18 +41720,24 @@ var Accuracy = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Accuracy.__proto__ || Object.getPrototypeOf(Accuracy)).call(this, props));
 
-    _this.initialize = _this.initialize.bind(_this);
+    _this.state = { count: 100, correct: 79, accuracy: 79 / 100.0 };
+
+    _this.handleCorrect = _this.handleCorrect.bind(_this);
+    _this.handleIncorrect = _this.handleIncorrect.bind(_this);
     return _this;
   }
 
   _createClass(Accuracy, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.initialize();
+    key: 'handleCorrect',
+    value: function handleCorrect() {
+      this.setState({ count: this.state.count + 1 });
+      this.setState({ correct: this.state.correct + 1 });
     }
   }, {
-    key: 'initialize',
-    value: function initialize() {}
+    key: 'handleIncorrect',
+    value: function handleIncorrect(id) {
+      this.setState({ count: this.state.count + 1 });
+    }
   }, {
     key: 'render',
     value: function render() {
@@ -41738,10 +41746,76 @@ var Accuracy = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(
-          'h1',
+          'h2',
           null,
-          'Result:',
-          this.props.result
+          'Accuracy: ',
+          (this.state.correct / this.state.count * 100.0).toPrecision(4),
+          ' %'
+        ),
+        _react2.default.createElement(
+          'h3',
+          null,
+          'Number of Trials: ',
+          this.state.count
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.ButtonGroup,
+          { vertical: true },
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'success', bsSize: 'large', onClick: this.handleCorrect },
+            'Correct'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'A - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'B - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'C - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'D - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'E - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'F - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'G - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'H - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'I - Incorrect'
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Button,
+            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            'J - Incorrect'
+          )
         )
       );
     }
@@ -41752,7 +41826,7 @@ var Accuracy = function (_React$Component) {
 
 module.exports = Accuracy;
 
-},{"react":442,"react-dom":293}],448:[function(require,module,exports){
+},{"react":442,"react-bootstrap":282,"react-dom":293}],448:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -41800,7 +41874,7 @@ var Application = function (_React$Component) {
               return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_Canvas2.default, { height: '700', width: '700', lineWidth: '50' })
+                _react2.default.createElement(_Canvas2.default, { height: '600', width: '600', lineWidth: '50' })
               );
             } else {
               return _react2.default.createElement('div', null);
@@ -42019,14 +42093,18 @@ var Canvas = function (_React$Component) {
         'div',
         null,
         _react2.default.createElement(
-          'h1',
+          _reactBootstrap.Jumbotron,
           null,
-          'Draw a letter'
-        ),
-        _react2.default.createElement(
-          'h2',
-          null,
-          'A,B,C,D,E,F,G,H,I,J'
+          _react2.default.createElement(
+            _reactBootstrap.PageHeader,
+            null,
+            'Draw a letter ',
+            _react2.default.createElement(
+              'small',
+              null,
+              ' A,B,C,D,E,F,G,H,I,J'
+            )
+          )
         ),
         _react2.default.createElement(
           _reactBootstrap.Grid,
@@ -42054,7 +42132,13 @@ var Canvas = function (_React$Component) {
             _react2.default.createElement(
               _reactBootstrap.Col,
               { xs: 6, sm: 4, md: 4 },
-              _react2.default.createElement(_Accuracy2.default, { result: this.state.text })
+              _react2.default.createElement(
+                'h1',
+                null,
+                'Result:',
+                this.state.text
+              ),
+              _react2.default.createElement(_Accuracy2.default, null)
             )
           )
         )
