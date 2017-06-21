@@ -41731,30 +41731,33 @@ var Accuracy = function (_React$Component) {
   _createClass(Accuracy, [{
     key: 'handleCorrect',
     value: function handleCorrect(id) {
-      var letter = this.state.letterCount.slice();
-      letter[id] += 1;
-      this.setState({ letterCount: letter });
+      if (this.props.result != 10) {
+        var letter = this.state.letterCount.slice();
+        letter[id] += 1;
+        this.setState({ letterCount: letter });
 
-      var correct = this.state.letterCorrect.slice();
-      correct[id] += 1;
-      this.setState({ letterCorrect: correct });
+        var correct = this.state.letterCorrect.slice();
+        correct[id] += 1;
+        this.setState({ letterCorrect: correct });
 
-      this.setState({ count: this.state.count + 1 });
-      this.setState({ correct: this.state.correct + 1 });
+        this.setState({ count: this.state.count + 1 });
+        this.setState({ correct: this.state.correct + 1 });
 
-      this.props.onClick();
+        this.props.onClick();
+      }
     }
   }, {
     key: 'handleIncorrect',
     value: function handleIncorrect(id) {
+      if (this.props.result != 10) {
+        this.setState({ count: this.state.count + 1 });
 
-      this.setState({ count: this.state.count + 1 });
+        var letter = this.state.letterCount.slice();
+        letter[id] += 1;
+        this.setState({ letterCount: letter });
 
-      var letter = this.state.letterCount.slice();
-      letter[id] += 1;
-      this.setState({ letterCount: letter });
-
-      this.props.onClick();
+        this.props.onClick();
+      }
     }
   }, {
     key: 'render',

@@ -17,29 +17,32 @@ class Accuracy extends React.Component {
   }
 
   handleCorrect(id){
-    const letter = this.state.letterCount.slice();
-    letter[id] += 1;
-    this.setState({letterCount: letter});
+    if (this.props.result != 10){
+      const letter = this.state.letterCount.slice();
+      letter[id] += 1;
+      this.setState({letterCount: letter});
 
-    const correct = this.state.letterCorrect.slice();
-    correct[id] += 1;
-    this.setState({letterCorrect: correct});
+      const correct = this.state.letterCorrect.slice();
+      correct[id] += 1;
+      this.setState({letterCorrect: correct});
 
-    this.setState({count: this.state.count + 1});
-    this.setState({correct: this.state.correct + 1});
+      this.setState({count: this.state.count + 1});
+      this.setState({correct: this.state.correct + 1});
 
-    this.props.onClick();
+      this.props.onClick();
+    }
   }
 
   handleIncorrect(id){
+    if (this.props.result != 10) {
+      this.setState({count: this.state.count + 1});
 
-    this.setState({count: this.state.count + 1});
+      const letter = this.state.letterCount.slice();
+      letter[id] += 1;
+      this.setState({letterCount: letter});
 
-    const letter = this.state.letterCount.slice();
-    letter[id] += 1;
-    this.setState({letterCount: letter});
-
-    this.props.onClick();
+      this.props.onClick();
+    }
   }
 
   render () {
