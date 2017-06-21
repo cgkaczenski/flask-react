@@ -35,6 +35,7 @@ class Canvas extends React.Component {
     this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.lineWidth = 0.05;
     this.setState({text:[]});
+    this.setState({index:10});
   }
 
   getCursorPosition(e) {

@@ -9,9 +9,10 @@ class Accuracy extends React.Component {
 	constructor(props) {
     super(props);
     
-    this.state = {count: 100, correct:79,
+    this.state = {count: 100, correct:79, 
      letterCorrect:[7,7,10,9,8,8,8,5,9,8],
      letterCount:Array(10).fill(10)};
+
     this.handleCorrect = this.handleCorrect.bind(this);
     this.handleIncorrect = this.handleIncorrect.bind(this);
   }
@@ -27,6 +28,8 @@ class Accuracy extends React.Component {
       this.setState({letterCorrect: correct});
 
       this.setState({count: this.state.count + 1});
+      this.setState({correct: this.state.correct + 1});
+
       this.setState({correct: this.state.correct + 1});
 
       this.props.onClick();

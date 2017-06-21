@@ -41723,6 +41723,7 @@ var Accuracy = function (_React$Component) {
     _this.state = { count: 100, correct: 79,
       letterCorrect: [7, 7, 10, 9, 8, 8, 8, 5, 9, 8],
       letterCount: Array(10).fill(10) };
+
     _this.handleCorrect = _this.handleCorrect.bind(_this);
     _this.handleIncorrect = _this.handleIncorrect.bind(_this);
     return _this;
@@ -41741,6 +41742,8 @@ var Accuracy = function (_React$Component) {
         this.setState({ letterCorrect: correct });
 
         this.setState({ count: this.state.count + 1 });
+        this.setState({ correct: this.state.correct + 1 });
+
         this.setState({ correct: this.state.correct + 1 });
 
         this.props.onClick();
@@ -42176,6 +42179,7 @@ var Canvas = function (_React$Component) {
       this.ctx.strokeRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.lineWidth = 0.05;
       this.setState({ text: [] });
+      this.setState({ index: 10 });
     }
   }, {
     key: 'getCursorPosition',
