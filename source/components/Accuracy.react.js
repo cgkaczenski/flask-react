@@ -7,8 +7,8 @@ import { ButtonGroup } from 'react-bootstrap';
 class Accuracy extends React.Component {
 	constructor(props) {
     super(props);
-    this.state = {count: 100, correct:79, accuracy:79/100.0};
-
+    
+    this.state = {count: 100, correct:79};
     this.handleCorrect = this.handleCorrect.bind(this);
     this.handleIncorrect = this.handleIncorrect.bind(this);
   }
@@ -16,10 +16,12 @@ class Accuracy extends React.Component {
   handleCorrect(){
     this.setState({count: this.state.count + 1});
     this.setState({correct: this.state.correct + 1});
+    this.props.onClick();
   }
 
-  handleIncorrect(id){
+  handleIncorrect(){
     this.setState({count: this.state.count + 1});
+    this.props.onClick();
   }
 
   render () {

@@ -41720,8 +41720,7 @@ var Accuracy = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Accuracy.__proto__ || Object.getPrototypeOf(Accuracy)).call(this, props));
 
-    _this.state = { count: 100, correct: 79, accuracy: 79 / 100.0 };
-
+    _this.state = { count: 100, correct: 79 };
     _this.handleCorrect = _this.handleCorrect.bind(_this);
     _this.handleIncorrect = _this.handleIncorrect.bind(_this);
     return _this;
@@ -41732,11 +41731,13 @@ var Accuracy = function (_React$Component) {
     value: function handleCorrect() {
       this.setState({ count: this.state.count + 1 });
       this.setState({ correct: this.state.correct + 1 });
+      this.props.onClick();
     }
   }, {
     key: 'handleIncorrect',
-    value: function handleIncorrect(id) {
+    value: function handleIncorrect() {
       this.setState({ count: this.state.count + 1 });
+      this.props.onClick();
     }
   }, {
     key: 'render',
@@ -42138,7 +42139,7 @@ var Canvas = function (_React$Component) {
                 'Result:',
                 this.state.text
               ),
-              _react2.default.createElement(_Accuracy2.default, null)
+              _react2.default.createElement(_Accuracy2.default, { onClick: this.initialize })
             )
           )
         )

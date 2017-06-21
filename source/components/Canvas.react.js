@@ -132,7 +132,7 @@ class Canvas extends React.Component {
 			      </Col>
 			      <Col xs={6} sm={4} md={4}>
 			        <h1>Result:{this.state.text}</h1>
-			      	<Accuracy/>
+			      	<Accuracy onClick={this.initialize}/>
 			      </Col>
 			    </Row>
 			</Grid>
