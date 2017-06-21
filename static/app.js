@@ -41720,7 +41720,9 @@ var Accuracy = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Accuracy.__proto__ || Object.getPrototypeOf(Accuracy)).call(this, props));
 
-    _this.state = { count: 100, correct: 79 };
+    _this.state = { count: 100, correct: 79,
+      letterCorrect: [7, 7, 10, 9, 8, 8, 8, 5, 9, 8],
+      letterCount: Array(10).fill(10) };
     _this.handleCorrect = _this.handleCorrect.bind(_this);
     _this.handleIncorrect = _this.handleIncorrect.bind(_this);
     return _this;
@@ -41728,93 +41730,261 @@ var Accuracy = function (_React$Component) {
 
   _createClass(Accuracy, [{
     key: 'handleCorrect',
-    value: function handleCorrect() {
+    value: function handleCorrect(id) {
+      var letter = this.state.letterCount.slice();
+      letter[id] += 1;
+      this.setState({ letterCount: letter });
+
+      var correct = this.state.letterCorrect.slice();
+      correct[id] += 1;
+      this.setState({ letterCorrect: correct });
+
       this.setState({ count: this.state.count + 1 });
       this.setState({ correct: this.state.correct + 1 });
+
       this.props.onClick();
     }
   }, {
     key: 'handleIncorrect',
-    value: function handleIncorrect() {
+    value: function handleIncorrect(id) {
+
       this.setState({ count: this.state.count + 1 });
+
+      var letter = this.state.letterCount.slice();
+      letter[id] += 1;
+      this.setState({ letterCount: letter });
+
       this.props.onClick();
     }
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
 
       return _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
-          'h2',
-          null,
-          'Accuracy: ',
+          'h4',
+          { block: true },
+          'Total Accuracy: ',
           (this.state.correct / this.state.count * 100.0).toPrecision(4),
           ' %'
         ),
         _react2.default.createElement(
-          'h3',
+          'h4',
           null,
           'Number of Trials: ',
           this.state.count
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Table,
+          { striped: true, bordered: true, condensed: true, hover: true },
+          _react2.default.createElement(
+            'thead',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                null,
+                'Letter'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'A'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'B'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'C'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'D'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'E'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'F'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'G'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'H'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'I'
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                'J'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'tbody',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'td',
+                null,
+                'Accuracy'
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[0] / this.state.letterCount[0]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[1] / this.state.letterCount[1]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[2] / this.state.letterCount[2]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[3] / this.state.letterCount[3]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[4] / this.state.letterCount[4]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[5] / this.state.letterCount[5]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[6] / this.state.letterCount[6]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[7] / this.state.letterCount[7]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[8] / this.state.letterCount[8]).toPrecision(2)
+              ),
+              _react2.default.createElement(
+                'td',
+                null,
+                (this.state.letterCorrect[9] / this.state.letterCount[9]).toPrecision(2)
+              )
+            )
+          )
         ),
         _react2.default.createElement(
           _reactBootstrap.ButtonGroup,
           { vertical: true },
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'success', bsSize: 'large', onClick: this.handleCorrect },
+            { bsStyle: 'success', bsSize: 'large', onClick: function onClick() {
+                return _this2.handleCorrect(_this2.props.result);
+              } },
             'Correct'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(0);
+              } },
             'A - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(1);
+              } },
             'B - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(2);
+              } },
             'C - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(3);
+              } },
             'D - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(4);
+              } },
             'E - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(5);
+              } },
             'F - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(6);
+              } },
             'G - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(7);
+              } },
             'H - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(8);
+              } },
             'I - Incorrect'
           ),
           _react2.default.createElement(
             _reactBootstrap.Button,
-            { bsStyle: 'danger', onClick: this.handleIncorrect },
+            { bsStyle: 'danger', onClick: function onClick() {
+                return _this2.handleIncorrect(9);
+              } },
             'J - Incorrect'
           )
         )
@@ -41975,7 +42145,7 @@ var Canvas = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Canvas.__proto__ || Object.getPrototypeOf(Canvas)).call(this, props));
 
-    _this.state = { text: [] };
+    _this.state = { text: [], index: 10 };
 
     _this.onMouseDown = _this.onMouseDown.bind(_this);
     _this.onMouseUp = _this.onMouseUp.bind(_this);
@@ -42056,8 +42226,8 @@ var Canvas = function (_React$Component) {
         }).then(function (response) {
           var index = response.data.result;
           var text = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
-          console.log(index);
           this.setState({ text: text[index] });
+          this.setState({ index: index });
         }.bind(_this2)).catch(function (error) {
           console.log(error);
         });
@@ -42115,7 +42285,7 @@ var Canvas = function (_React$Component) {
             { className: 'show-grid' },
             _react2.default.createElement(
               _reactBootstrap.Col,
-              { xs: 7, sm: 8, md: 8 },
+              { xs: 7, sm: 7, md: 7 },
               _react2.default.createElement('canvas', {
                 ref: function ref(canvas) {
                   _this3.canvasRef = canvas;
@@ -42132,14 +42302,14 @@ var Canvas = function (_React$Component) {
             ),
             _react2.default.createElement(
               _reactBootstrap.Col,
-              { xs: 6, sm: 4, md: 4 },
+              { xs: 6, sm: 3, md: 3 },
               _react2.default.createElement(
                 'h1',
                 null,
                 'Result:',
                 this.state.text
               ),
-              _react2.default.createElement(_Accuracy2.default, { onClick: this.initialize })
+              _react2.default.createElement(_Accuracy2.default, { result: this.state.index, onClick: this.initialize })
             )
           )
         )

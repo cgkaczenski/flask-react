@@ -11,7 +11,7 @@ import { Jumbotron } from 'react-bootstrap';
 class Canvas extends React.Component {
 	constructor(props) {
     super(props);
-    this.state = {text: []};
+    this.state = {text: [], index:10};
 
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -81,8 +81,8 @@ class Canvas extends React.Component {
       .then(function (response) {
         var index = response.data.result;
         var text = ["A","B","C","D","E","F","G","H","I","J"];
-        console.log(index);
         this.setState({text:text[index]});
+        this.setState({index:index});
       }.bind(this))
       .catch(function (error) {
         console.log(error);
@@ -121,7 +121,7 @@ class Canvas extends React.Component {
 	    
 			<Grid>
 				<Row className="show-grid">
-			      <Col xs={7} sm={8} md={8}>
+			      <Col xs={7} sm={7} md={7}>
 			        <canvas
 			         ref={(canvas) => { this.canvasRef = canvas; }}
 			         onMouseDown={this.onMouseDown}
@@ -130,9 +130,9 @@ class Canvas extends React.Component {
 			         ></canvas>
 			         <button style={buttonStyle} onClick={this.initialize}>Clear</button>
 			      </Col>
-			      <Col xs={6} sm={4} md={4}>
+			      <Col xs={6} sm={3} md={3}>
 			        <h1>Result:{this.state.text}</h1>
-			      	<Accuracy onClick={this.initialize}/>
+			      	<Accuracy result={this.state.index} onClick={this.initialize}/>
 			      </Col>
 			    </Row>
 			</Grid>
