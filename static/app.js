@@ -42276,7 +42276,7 @@ var Canvas = function (_React$Component) {
           _react2.default.createElement(
             _reactBootstrap.PageHeader,
             null,
-            'Draw a letter ',
+            'Draw a Letter ',
             _react2.default.createElement(
               'small',
               null,

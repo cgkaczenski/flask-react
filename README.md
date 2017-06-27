@@ -13,6 +13,11 @@ In a terminal or command window, navigate to the top-level project directory(tha
 pip install -r requirements
 npm install
 ```  
+### Data
+
+The data for this project is provided by Yaroslav Bulatov:
+- [notMNIST Dataset](http://yaroslavvb.blogspot.com/2011/09/notmnist-dataset.html)
+- [Preprocessing Jupyter Notebook](https://github.com/cgkaczenski/TensorFlow-Examples/blob/master/1_notmnist.ipynb)
 
 ### Build 
 

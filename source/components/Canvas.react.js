@@ -116,7 +116,7 @@ class Canvas extends React.Component {
       return (
     	<div>
     		<Jumbotron>
-	    		<PageHeader>Draw a letter <small> A,B,C,D,E,F,G,H,I,J</small>
+	    		<PageHeader>Draw a Letter <small> A,B,C,D,E,F,G,H,I,J</small>
 	    		</PageHeader>
 	    	</Jumbotron>
 	    
